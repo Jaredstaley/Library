@@ -18,7 +18,7 @@ public class User {
         return userID;
     }
 
-    public ArrayList getBooks(){
+    public ArrayList<String> getBooks(){
         return borrowedBooks;
     }
 
