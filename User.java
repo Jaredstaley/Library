@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class User {
     private String name;
     private String userID;
-    private ArrayList<String> books = new ArrayList<>();
+    private ArrayList<String> borrowedBooks = new ArrayList<>();
 
     public User(String name, String userID){
         this.name = name;
@@ -19,24 +19,25 @@ public class User {
     }
 
     public ArrayList getBooks(){
-        return books;
+        return borrowedBooks;
     }
 
     public void addBook(Book book){
-        books.add(book.getBookID());
+        borrowedBooks.add(book.getBookID());
     }
 
     public void removeBook(Book book){
-        for(int i = 0; i < books.size(); i++){
-            if (books.get(i) == book.getBookID()){
-                books.remove(i);
+        for(int i = 0; i < borrowedBooks.size(); i++){
+            if (borrowedBooks.get(i) == book.getBookID()){
+                borrowedBooks.remove(i);
             } 
         }
     }
+
     public void displayUser(){
         System.out.println(name + " has the UserID " + userID);
         System.out.println("Currently borrowing: ");
-        for (String bookID : books){
+        for (String bookID : borrowedBooks){
             System.out.println(bookID);
         }
     }
