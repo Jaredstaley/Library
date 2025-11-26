@@ -3,13 +3,19 @@ public class Book {
     private String author;
     private String bookID;
     private Boolean available;
+    private Integer copies;
 
 
-    public Book(String title, String author, String bookID){
+    public Book(String title, String author, String bookID, Integer copies){
         this.title = title;
         this.author = author;
         this.bookID = bookID;
+        this.copies = copies;
         this.available = true;
+    }
+
+    public Book(String title, String author, String bookID){
+        this(title,author,bookID,1);
     }
 
     public String getTitle(){
@@ -26,6 +32,10 @@ public class Book {
 
     public boolean getAvailable(){
         return available;
+    }
+
+    public Integer getCopies(){
+        return copies;
     }
 
     public void setAvailable(){
