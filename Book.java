@@ -38,6 +38,14 @@ public class Book {
         return copies;
     }
 
+    public void reduceCopies(){
+        copies--; 
+    }
+
+    public void increaseCopies(){
+        copies++;
+    }
+
     public void setAvailable(){
         available = !available;
     }
