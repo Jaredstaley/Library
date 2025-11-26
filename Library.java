@@ -1,13 +1,22 @@
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Library {
     private int maxBooks = 3;
     private ArrayList<Book> books;
     private ArrayList<User> users;
+    private Queue<BorrowRequest> borrowQueue;
+    private Queue<ReturnRequest> returnQueue;
+    private Deque<Action> actionStack;
 
     public Library(){
         books = new ArrayList<>();
         users = new ArrayList<>();
+        borrowQueue  = new LinkedList<>();
+        returnQueue  = new LinkedList<>();
+        actionStack = new LinkedList<>();
     }
 
     public void addBook(Book b){
@@ -18,7 +27,21 @@ public class Library {
         users.add(u);
     }
 
-    public void borrowBook(String userId, String bookId){
+    public void borrowRequest(String userID, String bookID){
+        BorrowRequest request = new BorrowRequest(bookID, userID);
+        borrowQueue.add(request);
+    }
+
+
+    public void borrowBook(){
+        BorrowRequest request = borrowQueue.peek();
+        if (request == null){
+            System.out.println("No books in queue");
+            return;
+        }
+        String userId = request.getUserID();
+        String bookId = request.getBookID();
+
         User borrower = null;
         for (User u: users){
             if(u.getUserID().equals(userId)){
@@ -54,11 +77,25 @@ public class Library {
         }
 
         borrower.addBook(borrowedBook);
+        borrowQueue.poll();
         borrowedBook.setAvailable();
         System.out.println(borrower.getName() + " borrowed " + borrowedBook.getTitle());
     }
 
-    public void returnBook(String userId, String bookId){
+    public void returnRequest(String userId, String bookId){
+        ReturnRequest request = new ReturnRequest(bookId, userId);
+        returnQueue.add(request);
+    }
+
+    public void returnBook(){
+        ReturnRequest request = returnQueue.peek();
+        if (request == null){
+            System.out.println("No books in queue");
+            return;
+        }
+        String userId = request.getUserID();
+        String bookId = request.getBookID();
+
         User borrower = null;
         for (User u: users){
             if(u.getUserID().equals(userId)){
@@ -67,7 +104,7 @@ public class Library {
             }
         }
         if (borrower == null){
-            System.out.println("No user found with id: " + userId);
+            System.out.println("No user found with id " + userId);
             return;
         }  
         Book borrowedBook = null;
@@ -88,6 +125,7 @@ public class Library {
         }
 
         borrowedBook.setAvailable();
+        borrowQueue.poll();
         System.out.println("Book returned");
         for(int i = 0; i < borrower.getBooks().size(); i++){
             if (borrower.getBooks().get(i) == bookId){
