@@ -36,9 +36,13 @@ public class User {
 
     public void displayUser(){
         System.out.println(name + " has the UserID " + userID);
-        System.out.println("Currently borrowing: ");
-        for (String bookID : borrowedBooks){
-            System.out.println(bookID);
+        if (!borrowedBooks.isEmpty()){
+            System.out.println("Currently borrowing: ");
+            for (String bookID : borrowedBooks){
+                System.out.println(bookID);
+            }
+        } else {
+            System.out.println(name + " is not borrowing books currently");
         }
     }
 }
