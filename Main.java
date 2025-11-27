@@ -30,9 +30,12 @@ public class Main {
         while (true) {
             System.out.println("1) Display all books ");
             System.out.println("2) Display all users  ");
-            System.out.println("3) Borrow a book ");
-            System.out.println("4) Return a book ");
-            System.out.println("5) Exit");
+            System.out.println("3) Request to borrow a book ");
+            System.out.println("4) Request to Return a book ");
+            System.out.println("5) Perform borrow");
+            System.out.println("6) Perform Return");
+            System.out.println("7) Undo action ");
+            System.out.println("8) Exit");
             System.out.print("Choose one of the above: ");
             int userChoice = sc.nextInt();
             sc.nextLine();
@@ -43,16 +46,22 @@ public class Main {
             } else if (userChoice == 3) {
                 System.out.print("Enter usersID: ");
                 String userID = sc.nextLine();
-                System.out.print("Enter usersID: ");
+                System.out.print("Enter bookID: ");
                 String bookID = sc.nextLine();
-                library.borrowBook(userID, bookID);
+                library.borrowRequest(userID, bookID);
             } else if (userChoice == 4) {
                 System.out.print("Enter usersID: ");
                 String userID = sc.nextLine();
-                System.out.print("Enter usersID: ");
+                System.out.print("Enter bookID: ");
                 String bookID = sc.nextLine();
-                library.returnBook(userID, bookID);
+                library.returnRequest(userID, bookID);
             } else if (userChoice == 5) {
+                library.borrowBook();
+            } else if (userChoice == 6) {
+                library.returnBook();
+            } else if (userChoice == 7) {
+                library.undoAction();
+            } else if (userChoice == 8) {
                 break;
             }
         }
