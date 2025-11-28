@@ -6,7 +6,7 @@ public class Main {
         Library library = new Library();
 
         // Create Books
-        Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "B001");
+        Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "B001",2);
         Book book2 = new Book("1984", "George Orwell", "B002");
         Book book3 = new Book("Clean Code", "Robert C. Martin", "B003");
         Book book4 = new Book("Java Programming", "Author X", "B004");

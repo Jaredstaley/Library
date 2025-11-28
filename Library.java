@@ -158,7 +158,7 @@ public class Library {
 
     public void displayAllBooks(){
         for (Book b:books){
-            System.out.println(b + " Avalaible: "+ b.getAvailable());
+            System.out.println(b);
         }
     }
 
