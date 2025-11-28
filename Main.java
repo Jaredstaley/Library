@@ -37,7 +37,9 @@ public class Main {
             System.out.println("7) Undo action ");
             System.out.println("8) Add book from catalog");
             System.out.println("9) Remove book from catalog");
-            System.out.println("10) Exit");
+            System.out.println("10) View book ");
+            System.out.println("11) Show previously viewed books");
+            System.out.println("12) Exit");
             System.out.print("Choose one of the above: ");
             int userChoice = sc.nextInt();
             sc.nextLine();
@@ -68,6 +70,16 @@ public class Main {
             } else if (userChoice == 9) {
                 return;
             } else if (userChoice == 10) {
+                System.out.print("Enter usersID: ");
+                String userID = sc.nextLine();
+                System.out.print("Enter bookID: ");
+                String bookID = sc.nextLine();
+                library.viewBook(bookID,userID);
+            } else if (userChoice == 11) {
+                System.out.print("Enter usersID: ");
+                String userID = sc.nextLine();
+                library.displayPreviouslyViewed(userID);
+            } else if (userChoice == 12) {
                 break;
             }
         }

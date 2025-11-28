@@ -51,26 +51,16 @@ public class Library {
         String userId = request.getUserID();
         String bookId = request.getBookID();
 
-        User borrower = null;
-        for (User u: users){
-            if(u.getUserID().equals(userId)){
-                borrower = u;
-                break;
-            }
-        }
+        User borrower = findUser(userId); 
+
         if (borrower == null){
             System.out.println("No user found with id: " + userId);
             borrowQueue.poll();
             return;
         }
 
-        Book borrowedBook = null;
-        for (Book b: books){
-            if(b.getBookID().equals(bookId)){
-                borrowedBook = b;
-                break;
-            }
-        }
+        Book borrowedBook = findBook(bookId);
+
         if (borrowedBook == null){
             System.out.println("No book found with id: " + bookId);
             borrowQueue.poll();
@@ -120,25 +110,15 @@ public class Library {
         String userId = request.getUserID();
         String bookId = request.getBookID();
 
-        User borrower = null;
-        for (User u: users){
-            if(u.getUserID().equals(userId)){
-                borrower = u;
-                break;
-            }
-        }
+        User borrower = findUser(userId); 
+
         if (borrower == null){
             System.out.println("No user found with id " + userId);
             borrowQueue.poll();
             return;
         }  
-        Book borrowedBook = null;
-        for (Book b: books){
-            if(b.getBookID().equals(bookId)){
-                borrowedBook = b;
-                break;
-            }
-        }
+        Book borrowedBook = findBook(bookId);
+
         if (borrowedBook == null){
             System.out.println("No book found with id: " + bookId);
             borrowQueue.poll();
@@ -189,13 +169,7 @@ public class Library {
         Action lastAction = actionStack.pop();
         String userId = lastAction.getUserID();
         Book book = lastAction.getBook();
-        User borrower = null;
-        for (User u: users){
-            if(u.getUserID().equals(userId)){
-                borrower = u;
-                break;
-            }
-        }
+        User borrower = findUser(userId); 
 
         if (lastAction.getAction() == ActionType.RETURN){
             if (book.getCopies() > 1) {
@@ -232,4 +206,49 @@ public class Library {
         }
     }
 
+    // Viewing book feature
+    public void viewBook(String bookId, String userId){
+        User borrower = findUser(userId);
+        Book viewBook = findBook(bookId); 
+
+        if (viewBook == null){
+            System.out.println("Book not found!");
+        }
+        System.out.println(viewBook);
+        borrower.addViewedBook(viewBook);
+    }
+
+    // Show previously viewed book
+    public void displayPreviouslyViewed(String userId){
+        User borrower = findUser(userId);
+        if (borrower.getViewedBooks().isEmpty()){
+            System.out.println("No books previously viewed");
+            return;
+        }
+        System.out.println(borrower.peekViewedBook());
+    }
+
+    // Helper method to find user
+    public User findUser(String userId){
+        User borrower = null;
+        for (User u: users){
+            if(u.getUserID().equals(userId)){
+                borrower = u;
+                break;
+            }
+        }
+        return borrower;
+    }
+
+    // Helper method to find book
+    public Book findBook(String bookId){
+        Book borrowedBook = null;
+        for (Book b: books){
+            if(b.getBookID().equals(bookId)){
+                borrowedBook = b;
+                break;
+            }
+        }
+        return borrowedBook;
+    }
 }

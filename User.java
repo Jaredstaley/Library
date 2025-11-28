@@ -1,9 +1,12 @@
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class User {
     private String name;
     private String userID;
     private ArrayList<String> borrowedBooks = new ArrayList<>();
+    private Deque<Book> viewedBooks = new LinkedList<>();
 
     public User(String name, String userID){
         this.name = name;
@@ -44,5 +47,17 @@ public class User {
         } else {
             System.out.println(name + " is not borrowing books currently");
         }
+    }
+
+    public Deque<Book> getViewedBooks(){
+        return viewedBooks;
+    }
+
+    public void addViewedBook(Book book){
+        viewedBooks.addFirst(book);
+    }
+
+    public Book peekViewedBook(){
+        return viewedBooks.peek();
     }
 }
