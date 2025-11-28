@@ -10,6 +10,7 @@ public class Library {
     private Queue<BorrowRequest> borrowQueue;
     private Queue<ReturnRequest> returnQueue;
     private Deque<Action> actionStack;
+    private int bookIDCount = 1;
 
     public Library(){
         books = new ArrayList<>();
@@ -19,13 +20,26 @@ public class Library {
         actionStack = new LinkedList<>();
     }
 
-    public void addBook(Book b){
+    public void addBook(String title, String author, Integer copies){
+        String letter = "B";
+        String bookId = letter + String.format("%03d", bookIDCount);
+        bookIDCount++;
+        Book b = new Book(title, author,bookId,copies);
         books.add(b);
         Action action = new Action(null, b, ActionType.ADD_BOOK);
         actionStack.push(action);
     }
 
-    public void removeBook(Book b) {
+    public void addBook(String title, String author){
+        addBook(title,author, 1);
+    }
+
+    public void removeBook(String bookId) {
+        Book b = findBook(bookId);
+        if(b == null){
+            System.out.println("Book doesnt exsist");
+            return;
+        }
         books.remove(b);
         Action action = new Action(null, b, ActionType.REMOVE_BOOK);
         actionStack.push(action);
@@ -213,6 +227,9 @@ public class Library {
 
         if (viewBook == null){
             System.out.println("Book not found!");
+        }
+        if (borrower.getViewedBooks().size() > 10){
+            borrower.getViewedBooks().pollLast();
         }
         System.out.println(viewBook);
         borrower.addViewedBook(viewBook);

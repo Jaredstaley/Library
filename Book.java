@@ -51,7 +51,7 @@ public class Book {
     }
 
     public String toString(){
-        return title + " Is authored by " + author + " Avalaible: "+ available + " Copiers: " + copies;
+        return bookID + ": " + title + " Is authored by " + author + " Avalaibility: "+ available;
     }
     
 }

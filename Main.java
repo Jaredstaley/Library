@@ -5,17 +5,12 @@ public class Main {
         // Create Library
         Library library = new Library();
 
-        // Create Books
-        Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "B001",2);
-        Book book2 = new Book("1984", "George Orwell", "B002");
-        Book book3 = new Book("Clean Code", "Robert C. Martin", "B003");
-        Book book4 = new Book("Java Programming", "Author X", "B004");
+        // creating and adding Books
+        library.addBook("The Hobbit", "J.R.R. Tolkien", 2);
+        library.addBook("1984", "George Orwell");
+        library.addBook("Clean Code", "Robert C. Martin");
+        library.addBook("Java Programming", "Author X");
 
-        // Adding books
-        library.addBook(book1);
-        library.addBook(book2);
-        library.addBook(book3);
-        library.addBook(book4);
 
         // Create Users
         User user1 = new User("Jared", "U001");
@@ -66,9 +61,17 @@ public class Main {
             } else if (userChoice == 7) {
                 library.undoAction();
             } else if (userChoice == 8) {
-                return;
+                System.out.print("Enter title: ");
+                String title = sc.nextLine();
+                System.out.print("Enter author: ");
+                String author = sc.nextLine();
+                System.out.print("Enter copies: ");
+                Integer copies = sc.nextInt();
+                library.addBook(title, author,copies);
             } else if (userChoice == 9) {
-                return;
+                System.out.print("Enter bookID: ");
+                String bookID = sc.nextLine();
+                library.removeBook(bookID);
             } else if (userChoice == 10) {
                 System.out.print("Enter usersID: ");
                 String userID = sc.nextLine();
