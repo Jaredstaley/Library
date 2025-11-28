@@ -21,6 +21,14 @@ public class Library {
 
     public void addBook(Book b){
         books.add(b);
+        Action action = new Action(null, b, ActionType.ADD_BOOK);
+        actionStack.push(action);
+    }
+
+    public void removeBook(Book b) {
+        books.remove(b);
+        Action action = new Action(null, b, ActionType.REMOVE_BOOK);
+        actionStack.push(action);
     }
 
     public void addUser(User u){
@@ -76,9 +84,18 @@ public class Library {
             return;
         }
 
+        if (borrowedBook.getCopies() > 1) {
+            borrowedBook.reduceCopies();
+        } else if (borrowedBook.getCopies() == 1) {
+            borrowedBook.reduceCopies();
+            borrowedBook.setAvailable();
+        }
+        
+        
+        Action action = new Action(borrower.getUserID(), borrowedBook, ActionType.ISSUE);
+        actionStack.push(action);
         borrower.addBook(borrowedBook);
         borrowQueue.poll();
-        borrowedBook.setAvailable();
         System.out.println(borrower.getName() + " borrowed " + borrowedBook.getTitle());
     }
 
@@ -124,14 +141,19 @@ public class Library {
             return;
         }
 
-        borrowedBook.setAvailable();
+        if (borrowedBook.getCopies() == 0) {
+            borrowedBook.setAvailable();
+            borrowedBook.increaseCopies();
+        } else if (borrowedBook.getCopies() > 0) {
+            borrowedBook.increaseCopies();
+        }
+        
+        
+        Action action = new Action(borrower.getUserID(), borrowedBook, ActionType.RETURN);
+        actionStack.push(action);
         borrowQueue.poll();
         System.out.println("Book returned");
-        for(int i = 0; i < borrower.getBooks().size(); i++){
-            if (borrower.getBooks().get(i) == bookId){
-                    borrower.getBooks().remove(i);
-            }
-        }
+        borrower.getBooks().remove(borrowedBook);
     }
 
     public void displayAllBooks(){
@@ -143,6 +165,57 @@ public class Library {
     public void displayAllUsers(){
         for(User u:users){
             u.displayUser();
+        }
+    }
+
+    public void undoAction(){
+        if (actionStack.isEmpty()) {
+            System.out.println("No actions to be undone.");
+            return;
+        }
+        Action lastAction = actionStack.pop();
+        String userId = lastAction.getUserID();
+        Book book = lastAction.getBook();
+        User borrower = null;
+        for (User u: users){
+            if(u.getUserID().equals(userId)){
+                borrower = u;
+                break;
+            }
+        }
+
+        if (lastAction.getAction() == ActionType.RETURN){
+            if (book.getCopies() > 1) {
+                book.reduceCopies();
+            } else if (book.getCopies() == 1) {
+                book.reduceCopies();
+                book.setAvailable();
+            }
+            borrower.addBook(book);
+            System.out.println("Action undone - " + book.getTitle() + " added back to users borrow list");
+            return;
+        }
+        if (lastAction.getAction() == ActionType.ISSUE){
+            if (book.getCopies() == 0) {
+                book.setAvailable();
+                book.increaseCopies();
+            } else if (book.getCopies() > 0) {
+                book.increaseCopies();
+            }
+            borrower.getBooks().remove(book);
+            System.out.println("Action undone - "+ book.getTitle() + " removed from users borrowed list.");
+            return;
+        }
+        if (lastAction.getAction() == ActionType.ADD_BOOK){
+            books.remove(book);
+            System.out.println("Action undone - "+ book.getTitle() + " removed.");
+            return;
+        }
+
+        if (lastAction.getAction() == ActionType.REMOVE_BOOK){
+            books.add(book);
+            System.out.println("Action undone - "+ book.getTitle() + " readded.");
+            return;
         }
     }
 

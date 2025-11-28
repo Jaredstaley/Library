@@ -11,7 +11,7 @@ public class Main {
         Book book3 = new Book("Clean Code", "Robert C. Martin", "B003");
         Book book4 = new Book("Java Programming", "Author X", "B004");
 
-        // Add books to library
+        // Adding books
         library.addBook(book1);
         library.addBook(book2);
         library.addBook(book3);
@@ -35,7 +35,9 @@ public class Main {
             System.out.println("5) Perform borrow");
             System.out.println("6) Perform Return");
             System.out.println("7) Undo action ");
-            System.out.println("8) Exit");
+            System.out.println("8) Add book from catalog");
+            System.out.println("9) Remove book from catalog");
+            System.out.println("10) Exit");
             System.out.print("Choose one of the above: ");
             int userChoice = sc.nextInt();
             sc.nextLine();
@@ -62,6 +64,10 @@ public class Main {
             } else if (userChoice == 7) {
                 library.undoAction();
             } else if (userChoice == 8) {
+                return;
+            } else if (userChoice == 9) {
+                return;
+            } else if (userChoice == 10) {
                 break;
             }
         }

@@ -15,4 +15,16 @@ public class Action {
         this.userID = userID;
         this.book = book;
     }
+
+    public ActionType getAction(){
+        return action;
+    }
+
+    public Book getBook(){
+        return book;
+    }
+
+    public String getUserID(){
+        return userID;
+    }
 }
