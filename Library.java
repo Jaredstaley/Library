@@ -34,13 +34,14 @@ public class Library {
     public void addUser(User u){
         users.add(u);
     }
-
+    
+    // Creating borrow request
     public void borrowRequest(String userID, String bookID){
         BorrowRequest request = new BorrowRequest(bookID, userID);
         borrowQueue.add(request);
     }
 
-
+    // Performing borrowRequest from queue of borrowRequests
     public void borrowBook(){
         BorrowRequest request = borrowQueue.peek();
         if (request == null){
@@ -59,6 +60,7 @@ public class Library {
         }
         if (borrower == null){
             System.out.println("No user found with id: " + userId);
+            borrowQueue.poll();
             return;
         }
 
@@ -71,16 +73,19 @@ public class Library {
         }
         if (borrowedBook == null){
             System.out.println("No book found with id: " + bookId);
+            borrowQueue.poll();
             return;
         }
 
         if (borrowedBook.getAvailable() == false){
             System.out.println("Book is currently unaviable");
+            borrowQueue.poll();
             return;
         }
 
         if (borrower.getBooks().size() >= maxBooks) {
             System.out.println("User has already borrowed the maximum number of books.");
+            borrowQueue.poll();
             return;
         }
 
@@ -98,12 +103,14 @@ public class Library {
         borrowQueue.poll();
         System.out.println(borrower.getName() + " borrowed " + borrowedBook.getTitle());
     }
-
+    
+    // Creating return request
     public void returnRequest(String userId, String bookId){
         ReturnRequest request = new ReturnRequest(bookId, userId);
         returnQueue.add(request);
     }
-
+    
+    // Performing returning book from queue of returnRequests
     public void returnBook(){
         ReturnRequest request = returnQueue.peek();
         if (request == null){
@@ -122,6 +129,7 @@ public class Library {
         }
         if (borrower == null){
             System.out.println("No user found with id " + userId);
+            borrowQueue.poll();
             return;
         }  
         Book borrowedBook = null;
@@ -133,11 +141,13 @@ public class Library {
         }
         if (borrowedBook == null){
             System.out.println("No book found with id: " + bookId);
+            borrowQueue.poll();
             return;
         }   
         
         if (!borrower.getBooks().contains(bookId)) {
             System.out.println("Book not taken out by this user! ");
+            borrowQueue.poll();
             return;
         }
 
@@ -155,19 +165,22 @@ public class Library {
         System.out.println("Book returned");
         borrower.getBooks().remove(borrowedBook);
     }
-
+    
+    // Displaying all books in Library
     public void displayAllBooks(){
         for (Book b:books){
             System.out.println(b);
         }
     }
-
+    
+    // Display Users in library
     public void displayAllUsers(){
         for(User u:users){
             u.displayUser();
         }
     }
-
+    
+    // Undo actions using FILO logic 
     public void undoAction(){
         if (actionStack.isEmpty()) {
             System.out.println("No actions to be undone.");
