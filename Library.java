@@ -128,20 +128,20 @@ public class Library {
 
         if (borrower == null){
             System.out.println("No user found with id " + userId);
-            borrowQueue.poll();
+            returnQueue.poll();
             return;
         }  
         Book borrowedBook = findBook(bookId);
 
         if (borrowedBook == null){
             System.out.println("No book found with id: " + bookId);
-            borrowQueue.poll();
+            returnQueue.poll();
             return;
         }   
         
         if (!borrower.getBooks().contains(bookId)) {
             System.out.println("Book not taken out by this user! ");
-            borrowQueue.poll();
+            returnQueue.poll();
             return;
         }
 
@@ -155,9 +155,9 @@ public class Library {
         
         Action action = new Action(borrower.getUserID(), borrowedBook, ActionType.RETURN);
         actionStack.push(action);
-        borrowQueue.poll();
+        returnQueue.poll();
         System.out.println("Book returned");
-        borrower.getBooks().remove(borrowedBook);
+        borrower.removeBook(borrowedBook);
     }
     
     // Displaying all books in Library
@@ -203,7 +203,7 @@ public class Library {
             } else if (book.getCopies() > 0) {
                 book.increaseCopies();
             }
-            borrower.getBooks().remove(book);
+            borrower.removeBook(book);
             System.out.println("Action undone - "+ book.getTitle() + " removed from users borrowed list.");
             return;
         }
